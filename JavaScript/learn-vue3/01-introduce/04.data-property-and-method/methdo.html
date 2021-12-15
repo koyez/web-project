@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue User input</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@next"></script>
+</head>
+<body>
+    <div id="app">
+        {{ data }}
+    </div>
+
+    <script>
+
+        // data() 函数会在vue组件初始化的时候调用，它返回的是一个对象，vue会通过响应式将其包裹起来，并通过$data的形式存储到组件实例中
+
+        const app = Vue.createApp({
+            data() {
+                return {
+                    count: 4
+                }
+            },
+            methods: {  // 我们用 methods 选项向组件实例添加方法，它应该是一个包含所需方法的对象：
+                increment() {
+                    this.count++;
+                }
+            }
+        });
+
+        // Vue 自动为 methods 绑定 this，以便于它始终指向组件实例。这将确保方法在用作事件监听或回调时保持正确的 this 指向。
+        // 在定义 methods 时应避免使用箭头函数，因为这会阻止 Vue 绑定恰当的 this 指向
+
+        const vm = app.mount("#app");
+        console.log(vm.$data.count)
+        console.log(vm.count)
+
+        // 修改vm.count 也会修改 vm.$data.count的值。
+        vm.count = 6;
+        console.log(vm.$data.count);
+
+        vm.increment();
+        console.log(vm.$data.count)
+
+        
+    </script>
+
+<!-- // 防抖和节流
+// Vue 没有内置支持防抖和节流，但可以使用 Lodash 等库来实现。
+
+// 如果某个组件仅使用一次，可以在 methods 中直接应用防抖： -->
+<script src="https://unpkg.com/lodash@4.17.20/lodash.min.js"></script>
+<script>
+  Vue.createApp({
+    methods: {
+      // 用 Lodash 的防抖函数
+      click: _.debounce(function() {
+        // ... 响应点击 ...
+      }, 500)
+    }
+  }).mount('#app')
+</script>
+<!-- 但是，这种方法对于可复用组件有潜在的问题，因为它们都共享相同的防抖函数。为了使组件实例彼此独立，可以在生命周期钩子的 created 里添加该防抖函数:
+ -->
+ <script>
+     app.component('save-button', {
+        created() {
+            // 使用 Lodash 实现防抖
+            this.debouncedClick = _.debounce(this.click, 500)
+        },
+        unmounted() {
+            // 移除组件时，取消定时器
+            this.debouncedClick.cancel()
+        },
+        methods: {
+            click() {
+            // ... 响应点击 ...
+            }
+        },
+        template: `
+            <button @click="debouncedClick">
+            Save
+            </button>
+        `
+        })
+ </script>
+
+</body>
+</html>

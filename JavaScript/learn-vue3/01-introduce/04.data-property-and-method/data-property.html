@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue User input</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@next"></script>
+</head>
+<body>
+    <div id="app">
+        {{ data }}
+    </div>
+
+    <script>
+
+        // data() 函数会在vue组件初始化的时候调用，它返回的是一个对象，vue会通过响应式将其包裹起来，并通过$data的形式存储到组件实例中
+
+        const app = Vue.createApp({
+            data() {
+                return {
+                    count: 4
+                }
+            }
+        });
+
+        const vm = app.mount("#app");
+        console.log(vm.$data.count)
+        console.log(vm.count)
+
+        // 修改vm.count 也会修改 vm.$data.count的值。
+        vm.count = 6;
+        console.log(vm.$data.count);
+
+    </script>
+</body>
+</html>

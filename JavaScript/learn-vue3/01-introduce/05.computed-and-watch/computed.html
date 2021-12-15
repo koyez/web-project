@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue User input</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@next"></script>
+</head>
+<body>
+    <div id="computed-basic">
+        <p>Has publish book: </p>
+        <span>{{ publishedBooksMessage }}</span>
+    </div>
+
+    <script>
+
+        // data() 函数会在vue组件初始化的时候调用，它返回的是一个对象，vue会通过响应式将其包裹起来，并通过$data的形式存储到组件实例中
+
+        const app = Vue.createApp({
+            data() {
+                return {
+                    author: {
+                        name: "John Doe",
+                        books: [
+                            "Vue2 - Advanced Guide",
+                            "Vue3 - Basic Guide",
+                            "Vue4 - The Mystery",
+                        ]
+                    }
+                }
+            },
+
+            // 针对于复杂的运算，应该使用计算属性 computed
+            computed: {
+                publishedBooksMessage() {
+                    return this.author.books.length > 1 ? "yes" : "no";
+                }
+            }
+        });
+
+        const vm = app.mount("#computed-basic");
+
+        // 计算属性缓存 vs 方法
+        // 你可能已经注意到我们可以通过在表达式中调用方法来达到同样的效果
+        // {
+        //     methods: {
+        //         calcBooksMessage() {
+        //             return this.books.length > 1 ? "yes": "no";
+        //         }
+        //     }
+        // }
+        // 不同的是计算属性 基于它们的响应依赖关系缓存。计算属性只会在它们响应依赖发生改变时才会进行变化，
+        // 这就意味着只要 author.books 还没有发生改变，多次访问 publishedBookMessage 时计算属性会立即返回之前的计算结果，而不必再次执行函数
+
+    </script>
+</body>
+</html>
