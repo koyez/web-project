@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue User input</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@next"></script>
+</head>
+<body>
+    <div id="condition-render">
+        <!-- // v-if 控制是否渲染，不是单纯隐藏或显示 -->
+        <h1 v-if="ok">Welcome vue3</h1>
+        <h1 v-else>oh no</h1>
+        <button @click="display">ok?</button>
+        <div v-if="type === 'A'">
+            A
+          </div>
+          <div v-else-if="type === 'B'">
+            B
+          </div>
+          <div v-else-if="type === 'C'">
+            C
+          </div>
+          <div v-else>
+            Not A/B/C
+          </div>
+        <div v-show="show">show</div>  
+         <!-- // v-show 只是控制css的display属性，来控制是否显示 -->
+    </div>
+    
+    <script>
+
+        // data() 函数会在vue组件初始化的时候调用，它返回的是一个对象，vue会通过响应式将其包裹起来，并通过$data的形式存储到组件实例中
+
+        const app = Vue.createApp({
+            data() {
+                return {
+                    ok: true,
+                    type: "A",
+                    show: false,
+                }
+            },
+            methods: {
+                display() {
+                    this.ok = !this.ok
+                }
+            }
+            
+        });
+
+        const vm = app.mount("#condition-render");
+
+    </script>
+</body>
+</html>
