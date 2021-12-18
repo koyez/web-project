@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue User input</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@next"></script>
+</head>
+<body>
+    <!-- 你可以用 v-model 指令在表单 <input>、<textarea> 及 <select> 元素上创建双向数据绑定。
+        它会根据控件类型自动选取正确的方法来更新元素。 -->
+        <!-- 注意：v-model 会忽略所有表单元素的 value、checked、selected attribute 的初始值。它将始终将当前活动实例的数据作为数据来源。
+            你应该通过 JavaScript 在组件的 data 选项中声明初始值。 -->
+
+    <!-- 文本 -->
+    <div id="basic-text">
+        <span>Multiline message is:</span>
+        <p style="white-space: pre-line;">{{ message }}</p>
+        <br />
+        <textarea v-model="message" placeholder="add multiple lines"></textarea>
+        <br />
+        <p>多选框</p>
+        <input type="checkbox" id="checkbox" v-model="checked" />
+        <label for="checkbox">{{ checked }}</label>
+        <br />
+        <p>单选框</p>
+        <div>
+            <input type="radio" id="one" value="One" v-model="picked" />
+            <label for="one">One</label>
+            <br />
+            <input type="radio" id="two" value="Two" v-model="picked" />
+            <label for="two">Two</label>
+            <br />
+            <span>Picked: {{ picked }}</span>
+        </div>
+        <p>选择框（select）</p>
+        <div>
+            <select v-model="selected">
+                <option disabled value="">Please select one</option>
+                <option>A</option>
+                <option>B</option>
+                <option>C</option>
+              </select>
+              <span>Selected: {{ selected }}</span>
+        </div>
+
+        <p>lazy控制只有改变时才会更新，而非实时更新</p>
+        <!-- 在“change”时而非“input”时更新 -->
+        <input v-model.lazy="lazyMsg" />
+        <p>lazyMsg: {{ lazyMsg }}</p>
+</div>
+
+    <script>
+        Vue.createApp({
+            data() {
+                return {
+                    message: "",
+                    checked: true,
+                    picked: "",
+                    selected: "",
+                    lazyMsg: ""
+                }
+            }
+        }).mount("#basic-text")
+    </script>
+</body>
+</html>

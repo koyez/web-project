@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue User input</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@next"></script>
+</head>
+<body>
+
+    <ul id="array-rendering">
+        <li v-for="item in items">
+            {{ item.message }}
+        </li>
+    </ul>
+
+    <!-- 为了给 Vue 一个提示，以便它能跟踪每个节点的身份，从而重用和重新排序现有元素，
+        你需要为每项提供一个唯一的 key attribute： -->
+        <div v-for="item in items" :key="item.id">
+            <!-- 内容 -->
+        </div>
+    
+    <script>
+
+        const app = Vue.createApp({
+            data() {
+                return {
+                    items: [
+                        {message: "Foo"},
+                        {message: "BAr"},
+                    ]
+                }
+            },
+            methods: {
+                display() {
+                    this.ok = !this.ok
+                }
+            }
+            
+        });
+
+        const vm = app.mount("#array-rendering");
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue User input</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@next"></script>
+</head>
+<body>
+    <div id="blog-posts-events-demo" class="demo">
+        <div :style="{ fontSize: postFontSize + 'em' }">
+          <blog-post
+             v-for="post in posts"
+             :key="post.id"
+             :title="post.title"
+             @enlarge-text="postFontSize += 0.1"
+          ></blog-post>
+        </div>
+      </div>
+
+    <script>
+        // 定义一个blog-post的全局组件
+        // 通过Prop向子组件传递数据
+        const app = Vue.createApp({
+        data() {
+            return {
+            posts: [
+                { id: 1, title: 'My journey with Vue'},
+                { id: 2, title: 'Blogging with Vue'},
+                { id: 3, title: 'Why Vue is so fun'}
+            ],
+            postFontSize: 1
+            }
+        }
+        })
+
+        app.component('blog-post', {
+        props: ['title'],
+        template: `
+            <div class="blog-post">
+            <h4>{{ title }}</h4>
+            <button @click="$emit('enlargeText')">
+                Enlarge text
+            </button>
+            </div>
+        `
+        })
+
+        // enlargeText, HTML attribute 名不区分大小写，因此浏览器将所有大写字符解释为小写。这意味着当你在 DOM 模板中使用时，驼峰 prop 名称和 event 处理器参数需要使用它们的 kebab-cased (横线字符分隔) 等效值：
+
+        // 子组件可以通过调用内建的 $emit 方法并传入事件名称来触发一个事件：
+
+
+        //  在 JavaScript 中是驼峰式
+
+        // app.component('blog-post', {
+        // props: ['postTitle'],
+        // template: `
+        //     <h3>{{ postTitle }}</h3>
+        // `
+        // })
+
+        // <!-- 在 HTML 中则是横线字符分割 -->
+
+        // <blog-post post-title="hello!"></blog-post>
+
+        app.mount("#blog-posts-events-demo");
+    </script>
+</body>
+</html>

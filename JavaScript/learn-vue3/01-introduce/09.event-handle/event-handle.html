@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue User input</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@next"></script>
+</head>
+<body>
+    <div id="basic-event">
+        <!-- 我们可以使用 v-on 指令 (通常缩写为 @ 符号) 来监听 DOM 事件，并在触发事件时执行一些 JavaScript。 -->
+        <button @click="counter += 1">Add 1</button>
+        <p>The button above has been clicked {{ counter }} times.</p>
+
+        <button @click="greet">Greet</button>
+        <button @click="say('hi')">Say Hi</button>
+        <button @click="one($event), two($event)">Submit</button>
+
+
+        <!-- 阻止单击事件继续冒泡 -->
+        <a @click.stop="doThis"></a>
+
+        <!-- 提交事件不再重载页面 -->
+        <form @submit.prevent="onSubmit"></form>
+
+        <!-- 修饰符可以串联 -->
+        <a @click.stop.prevent="doThat"></a>
+
+        <!-- 只有修饰符 -->
+        <form @submit.prevent></form>
+
+        <!-- 添加事件监听器时使用事件捕获模式 -->
+        <!-- 即内部元素触发的事件先在此处理，然后才交由内部元素进行处理 -->
+        <div @click.capture="doThis">...</div>
+
+        <!-- 只当在 event.target 是当前元素自身时触发处理函数 -->
+        <!-- 即事件不是从内部元素触发的 -->
+        <div @click.self="doThat">...</div>
+
+        <!-- 只有在 `key` 是 `Enter` 时调用 `vm.submit()` -->
+        <input @keyup.enter="submit" />
+
+    </div>
+
+    <script>
+        Vue.createApp({
+            data() {
+                return {
+                    counter: 0,
+                    name: "vue.js"
+                }
+            },
+            methods: {
+                greet(event) {
+                    alert(`Hello ${this.name}!`);
+                    if (event) { // `event` 是原生 DOM event
+                        alert(event.target.tagName)
+                    }
+                },
+                say(message) {
+                    alert(message);
+                },
+                one(event) {
+                    alert(`one: ${event}`);
+                },
+                two(event) {
+                    alert(`two: ${event}`);
+                },
+                submit() {
+                    alert("submit key down");
+                }
+            }
+        }).mount("#basic-event");
+    </script>
+
+</body>
+</html>
