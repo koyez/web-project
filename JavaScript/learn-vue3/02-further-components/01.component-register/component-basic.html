@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue User input</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@next"></script>
+</head>
+<body>
+    
+    <!-- 文本 -->
+    <div id="basic-text">
+        <my-component-name></my-component-name>
+        <!-- <NewComponentName></NewComponentName> -->
+        <new-component-name></new-component-name>
+        <child-component-demo></child-component-demo>
+
+    </div>
+
+    <script>
+
+        // 定义一个对象，子组件对象，建议首字母大写。
+        const ChildComponent = {
+            data() {
+                return {
+                    message: "child component"
+                }
+            },
+            template: `
+                <div>自组件：{{ message }} </div>
+            `
+        }
+
+        const app = Vue.createApp({
+            data() {
+                return {
+                    
+                }
+            },
+        })
+        // kebab-case: 全部小写，通过连接符进行连接。注册的全局组件。
+        app.component("my-component-name", {
+            data() {
+                return {
+                    counter: 1
+                }
+            },
+            template: `
+                <div @click="counter++">
+                    {{ counter }}
+                </div>
+            `
+        })
+        // camelCase: 驼峰写法，大小写区分。
+        app.component("new-component-name", {
+            data() {
+                return {
+                    isOk: true,
+                }
+            },
+            methods: {
+                Or() {
+                    this.isOk = !this.isOk;
+                }
+            },
+            template: `
+                <button @click="Or()"> {{ isOk }} </button>
+                <ChildComponent></ChildComponent> <!-- ChildComponent 不是全局组件，无法直接使用 -->
+            `
+        })
+        app.component("child-component-demo", {
+            components: {
+                ChildComponent,
+            },
+            template: `
+                <ChildComponent></ChildComponent>
+            `
+        })
+        app.mount("#basic-text")
+    </script>
+</body>
+</html>
