@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>audio 录音机</title>
+</head>
+<body>
+    <div class="app">
+        <button class="record-btn">开始录制</button>
+        <audio controls class="audio-player"></audio>
+    </div>
+    <script>
+        const recordBtn = document.querySelector(".record-btn");
+        const player = document.querySelector(".audio-player");
+
+        if (navigator.mediaDevices.getUserMedia) {
+        var chunks = [];
+        const constraints = { audio: true };
+        navigator.mediaDevices.getUserMedia(constraints).then(
+            stream => {
+            console.log("授权成功！");
+            // var options = {
+            //     audioBitsPerSecond : 128000,
+            //     mimeType : 'audio/ogg'
+            // }
+
+            const mediaRecorder = new MediaRecorder(stream);
+
+            recordBtn.onclick = () => {
+                if (mediaRecorder.state === "recording") {
+                    mediaRecorder.stop();
+                    recordBtn.textContent = "开始录制";
+                    console.log("录音结束");
+                } else {
+                    mediaRecorder.start();
+                    console.log("录音中...");
+                    recordBtn.textContent = "结束录制";
+                }
+                console.log("录音器状态：", mediaRecorder.state);
+            };
+
+            mediaRecorder.ondataavailable = e => {
+                chunks.push(e.data);
+            };
+
+            mediaRecorder.onstop = e => {
+                // var blob = new Blob(chunks, { type: "audio/ogg; codecs=opus" });
+                var blob = new Blob(chunks, { type: "audio/wav; codecs=0" });
+                chunks = [];
+                var audioURL = window.URL.createObjectURL(blob);
+                player.src = audioURL;
+
+                _download(blob, "audio-recorder", "pcm");
+            };
+            },
+            () => {
+            console.error("授权失败！");
+            }
+        );
+        } else {
+            console.error("浏览器不支持 getUserMedia");
+        }
+
+        function _download(blob, name, type) {
+            let oA = document.createElement('a');
+            oA.href = window.URL.createObjectURL(blob);
+            oA.download = `${ name }.${ type }`;
+            oA.click();
+        }
+    </script>
+</body>
+</html>
