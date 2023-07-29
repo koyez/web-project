@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue User input</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@next"></script>
+</head>
+<body>
+    
+    <!-- 文本 -->
+    <div id="basic-text">
+
+    </div>
+
+    <script>
+
+        const app = Vue.createApp({
+            data() {
+                return {
+                    content: "hello world"
+                }
+            },
+            methods: {
+                handleBtnClick() {
+                    this.content = this.content.split("").reverse().join("");
+                }
+            },
+            template: `
+                <p>{{ content }}</p>
+                <button @click="handleBtnClick">反转</button>
+            `
+        })
+        
+        app.mount("#basic-text")
+    </script>
+</body>
+</html>
