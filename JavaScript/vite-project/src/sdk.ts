@@ -14,6 +14,16 @@ export class MySDK {
     hello() {
         logger.debug("method: hello().")
         drplogger.debug("hello hello hello.")
+        const obj = {
+            a: "11",
+            b: 2,
+            s: true,
+            o: {
+                ff: "123",
+                ss: "ss"
+            }
+        }
+        drplogger.info("132131", "1231312", "1231312", "12313123123", obj);
         return "Hello form the SDK";
     }
 
